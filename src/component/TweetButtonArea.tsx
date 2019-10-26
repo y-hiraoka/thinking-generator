@@ -33,16 +33,24 @@ const useStyles = makeStyles(
 export const TweetButtonArea = () => {
 	const classes = useStyles();
 
+	const handleClick = (container: GlobalStateContainer) => () => {
+		const tweeturl = `http://twitter.com/share`
+			+ `?url=${container.state.ogpUrl}`
+			+ `&text=${container.state.tweetText}`
+			+ `&via=stin_factory`
+			+ `&hashtags=と思うあなたであったジェネレーター`;
+	
+		window.open(tweeturl, "_blank");
+	}
+	
 	return (
 		<Subscribe to={[GlobalStateContainer]}>
 			{(container: GlobalStateContainer) => (
 				<div className={classes.buttonArea}>
 					<Button
-						href={`http://twitter.com/share?url=https://thinking-generator.firebaseapp.com&text=${container.state.tweetText}&via=stin_factory&hashtags=と思うあなたであったジェネレーター`}
+						onClick={handleClick(container)}
 						className={classes.tweetButton}
-						target="_blank"
-						disabled={container.state.user === null}
-						onTouchStart={(e: React.TouchEvent<HTMLAnchorElement>) => { }}>
+						disabled={container.state.user === null}>
 						<TweetIcon />
 						<span className={classes.buttonText}>Tweetする！</span>
 					</Button>
