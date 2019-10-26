@@ -4,6 +4,8 @@ import { Title } from './component/Title';
 import { SigninArea } from './component/SigninArea';
 import { Provider } from 'unstated';
 import { CanvasArea } from './component/CanvasArea';
+import { TweetButtonArea } from './component/TweetButtonArea';
+import { TextFieldArea } from './component/TextFieldArea';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,7 +33,9 @@ const App: React.FC = () => {
         <div className={classes.container}>
           <Title />
           <SigninArea />
+          <TextFieldArea />
           <CanvasArea />
+          <TweetButtonArea />
         </div>
       </div>
     </Provider>
