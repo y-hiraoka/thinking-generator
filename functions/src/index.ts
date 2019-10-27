@@ -1,8 +1,11 @@
 import * as functions from 'firebase-functions';
+import * as admin from "firebase-admin";
+admin.initializeApp();
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+// Implement
+import shareImpl from "./share";
+import getOgpImageImpl from "./getOgpImage";
+
+export const share = functions.https.onRequest(shareImpl);
+
+export const getOgpImage = functions.https.onRequest(getOgpImageImpl);
