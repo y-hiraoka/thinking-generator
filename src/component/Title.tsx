@@ -9,7 +9,7 @@ const useStyles = makeStyles(
 			fontSize: 21,
 			textAlign: "center",
 			color: "rgba(0, 0, 0, 0.87)",
-			["@media (max-width:360px)"]: {
+			"@media (max-width:360px)": {
 				fontSize: 17,
 			}
 		}
