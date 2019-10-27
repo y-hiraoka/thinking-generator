@@ -20,7 +20,7 @@ const share = async (request: functions.https.Request, response: functions.Respo
 const createHtml = (uid: string) => {
 	const SITEURL = `https://${appDomain}`
 	const TITLE = `と思う〇〇であったジェネレーター`
-	const DESCRIPTION = '「と思った〇〇であった」という画像をTwitterに投稿するサービスです。'
+	const DESCRIPTION = '「と思う〇〇であった」という画像をTwitterに投稿するサービスです。'
 
 	return `<!DOCTYPE html>
 <html>
