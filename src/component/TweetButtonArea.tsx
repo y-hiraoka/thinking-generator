@@ -46,7 +46,7 @@ export const TweetButtonArea = () => {
 		await createRef.putString(imagedata, "base64").then(snapshot => {
 			const tweeturl = `http://twitter.com/share`
 				+ `?url=${container.ogpUrl}`
-				+ `&text=${container.state.tweetText}%0a%0a`
+				+ `&text=${container.state.tweetText.replace(/\r?\n/g, "%0a")}%0a%0a`
 
 			window.open(tweeturl, "_blank");
 		})
