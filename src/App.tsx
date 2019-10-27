@@ -6,6 +6,7 @@ import { Provider } from 'unstated';
 import { CanvasArea } from './component/CanvasArea';
 import { TweetButtonArea } from './component/TweetButtonArea';
 import { TextFieldArea } from './component/TextFieldArea';
+import { Footer } from './component/Footer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,9 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 600,
       minHeight: "100vh",
       boxShadow: "0 0 5px "
-    },
-    header: {
-
     },
   })
 );
@@ -36,6 +34,7 @@ const App: React.FC = () => {
           <TextFieldArea />
           <CanvasArea />
           <TweetButtonArea />
+          <Footer />
         </div>
       </div>
     </Provider>

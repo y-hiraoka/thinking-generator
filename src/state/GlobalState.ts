@@ -7,7 +7,6 @@ interface GlobalState {
 	errorMessage: string,
 	userName: string,
 	tweetText: string,
-	ogpUrl: string,
 }
 
 export class GlobalStateContainer extends Container<GlobalState> {
@@ -20,7 +19,6 @@ export class GlobalStateContainer extends Container<GlobalState> {
 			errorMessage: "",
 			userName: "",
 			tweetText: "",
-			ogpUrl: "",
 		}
 
 		firebase.auth().onAuthStateChanged(user => {
@@ -30,6 +28,12 @@ export class GlobalStateContainer extends Container<GlobalState> {
 				tweetText: "",
 			});
 		});
+	}
+
+	public get ogpUrl() {
+		if (!this.state.user) return `https://${window.location.host}`;
+
+		return `https://${window.location.host}/share/${this.state.user.uid}`;
 	}
 
 	public get PhotoUrlbigger() {
@@ -80,11 +84,5 @@ export class GlobalStateContainer extends Container<GlobalState> {
 		await this.setState({
 			tweetText: tweetText,
 		});
-	}
-
-	setOgpUrl = async (url: string) => {
-		await this.setState({
-			ogpUrl: url,
-		})
 	}
 }

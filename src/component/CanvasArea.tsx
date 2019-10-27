@@ -1,12 +1,12 @@
 import React from "react";
-import { makeStyles, Theme, createStyles, Paper } from "@material-ui/core";
+import { makeStyles, createStyles } from "@material-ui/core";
 import deattaBase from './deattaBase.jpeg';
 import { CanvasComponent } from "./CanvasComponent";
 import { GlobalStateContainer } from "../state/GlobalState";
 import { Subscribe } from "unstated";
-import { fillTextAutoLine } from "./utils/canvas";
+import { fillTextAutoLine } from "../utils/canvas";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(
 	createStyles({
 		canvasArea: {
 			width: "100%",
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		canvas: {
 			width: "100%",
-			boxShadow: "0 0 5px 0px",
+			boxShadow: " 5px 10px 20px rgba(0,0,1,0.25)",
 		},
 	}));
 
@@ -53,6 +53,7 @@ const updateCanvas = (container: GlobalStateContainer) =>
 			if (!container.state.user.photoURL) return;
 
 			const iconImage = new Image();
+			iconImage.crossOrigin = "Anonymous";
 			iconImage.src = container.photoUrl200x200;
 			iconImage.onload = () => {
 				context.drawImage(iconImage, 135, 210);

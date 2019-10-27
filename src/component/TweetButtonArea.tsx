@@ -1,8 +1,9 @@
 import React from 'react';
-import { makeStyles, createStyles, Theme, Button } from "@material-ui/core"
+import { makeStyles, createStyles, Button } from "@material-ui/core"
 import { Subscribe } from 'unstated';
 import TweetIcon from "@material-ui/icons/Twitter";
 import { GlobalStateContainer } from '../state/GlobalState';
+import firebase from "../firebase";
 
 const useStyles = makeStyles(
 	createStyles({
@@ -33,16 +34,25 @@ const useStyles = makeStyles(
 export const TweetButtonArea = () => {
 	const classes = useStyles();
 
-	const handleClick = (container: GlobalStateContainer) => () => {
-		const tweeturl = `http://twitter.com/share`
-			+ `?url=${container.state.ogpUrl}`
-			+ `&text=${container.state.tweetText}`
-			+ `&via=stin_factory`
-			+ `&hashtags=と思うあなたであったジェネレーター`;
-	
-		window.open(tweeturl, "_blank");
+	const handleClick = (container: GlobalStateContainer) => async () => {
+		const currentUser = firebase.auth().currentUser;
+		if (!currentUser) return;
+
+		const storageRef = firebase.storage().ref();
+		const createRef = storageRef.child(`ogp-images/${currentUser.uid}.jpg`);
+		const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+
+		const imagedata = canvas.toDataURL("image/jpeg").split(",")[1];
+		await createRef.putString(imagedata, "base64").then(snapshot => {
+			const tweeturl = `http://twitter.com/share`
+				+ `?url=${container.ogpUrl}`
+				+ `&text=${container.state.tweetText}%0a%0a`
+				+ `&hashtags=と思うあなたであったジェネレーター`;
+
+			window.open(tweeturl, "_blank");
+		})
 	}
-	
+
 	return (
 		<Subscribe to={[GlobalStateContainer]}>
 			{(container: GlobalStateContainer) => (
@@ -52,7 +62,7 @@ export const TweetButtonArea = () => {
 						className={classes.tweetButton}
 						disabled={container.state.user === null}>
 						<TweetIcon />
-						<span className={classes.buttonText}>Tweetする！</span>
+						<span className={classes.buttonText}>ツイートする！</span>
 					</Button>
 				</div>
 			)}
