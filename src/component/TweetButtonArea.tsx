@@ -47,7 +47,6 @@ export const TweetButtonArea = () => {
 			const tweeturl = `http://twitter.com/share`
 				+ `?url=${container.ogpUrl}`
 				+ `&text=${container.state.tweetText}%0a%0a`
-				+ `&hashtags=と思うあなたであったジェネレーター`;
 
 			window.open(tweeturl, "_blank");
 		})
