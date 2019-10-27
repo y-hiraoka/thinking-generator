@@ -27,7 +27,7 @@ const createHtml = (uid: string) => {
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>colorinco</title>
+    <title>と思う〇〇であったジェネレーター</title>
     <meta property="og:title" content="${TITLE}">
     <meta property="og:image" content="${SITEURL}/ogp/${uid}">
     <meta property="og:description" content="${DESCRIPTION}">
