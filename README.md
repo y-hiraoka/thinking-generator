@@ -1,44 +1,62 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# thinking-generator
 
-## Available Scripts
+「と思う〇〇であった」という画像を合成してTwitterでシェアすることができるWebアプリケーションです。
 
-In the project directory, you can run:
+TwitterでログインするとTwitterアカウントのアイコンとユーザー名を取得して画像をCanvasに表示します。
+呟きたい内容を入力して「ツイートする！」ボタンを押すとTwitter投稿画面に遷移し、リンクとともにツイート内容が表示されます。
 
-### `npm start`
+リンクを消さずに投稿するとTwitterのOGP表示の機能でさきほどCanvasに表示されていた画像がTwitterのタイムラインに表示されるようになります。
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 使用技術
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### フロントエンド
 
-### `npm test`
+- TypeScript
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+静的言語を好んでいるのでTypeScriptを採用しています。
 
-### `npm run build`
+- React
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+宣言的UIがとてもしっくり来ています。普通のHTMLが書けません。
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+状態管理は[Unstated](https://github.com/jamiebuilds/unstated)を使っています。
+シンプルに書けて非常に便利で愛用しています。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Material-UI
 
-### `npm run eject`
+Google Material Designを実装したReact専用のコンポーネントライブラリ。
+このアプリケーションではButtonとAvatarのみそのまま使い、同梱されているmakeStylesメソッドで
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### バックエンド
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Firebase Hosting
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Reactで作成したSingle Page Appをデプロイします。
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Firebase Functions
 
-## Learn More
+SPA構成では動的にTwitterCardを表示することができないので、Hostingの特定のURLにアクセスした場合はFunctionsが実行されるように設定して動的コンテンツの配信を実現しています。
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Firebase Storage
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+クライアントがCanvasで作成した画像を保存しています。
+
+## アプリケーションの流れ
+
+1. ユーザーが「ツイートする！」ボタンをクリックする
+
+1. Canvasの画像をjpegに変換してStorageの"ogp-images/{uid}.jpg"に保存する
+
+1. Tweet投稿画面に"hostURL/share/{uid}"を付与して遷移する
+
+1. "hostURL/share/{uid}"にアクセスした場合、Firebase Hostingの設定によりFunctionsの"share"関数がコールされ、metaタグとscriptタグのみ記述されたHTMLを返却する
+
+1. 上記のアクセス者がTwitterのクローラーの場合、metaタグを解析してTwitterCardを生成する
+
+1. 上記のアクセス者がブラウザの場合、scriptタグを実行して"hostURL"にリダイレクトする
+
+1. metaタグの"image"には"hostURL/ogp/{uid}"が記載されており、Firebase Hostingの設定によりFunctionsの"getOgpImage"がコールされ、Storageに保存された該当の画像を返却する
+
+## TODO
+
+- TwitterアイコンをCanvasに合成する際に丸形を選択できるようにしたい
