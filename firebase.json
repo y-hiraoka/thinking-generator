@@ -14,6 +14,14 @@
     ],
     "rewrites": [
       {
+        "source": "/share/*",
+        "function": "share"
+      },
+      {
+        "source": "/ogp/*",
+        "function": "getOgpImage"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
