@@ -48,7 +48,11 @@ export const TweetButtonArea = () => {
 				+ `?url=${container.ogpUrl}`
 				+ `&text=${container.state.tweetText.replace(/\r?\n/g, "%0a")}%0a%0a`
 
-			window.open(tweeturl, "_blank");
+			if (window.open(tweeturl, "_blank")) {
+
+			} else {
+				window.location.href = tweeturl;
+			};
 		})
 	}
 
