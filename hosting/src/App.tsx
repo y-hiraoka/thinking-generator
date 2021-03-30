@@ -1,12 +1,12 @@
-import React from 'react';
-import { makeStyles, createStyles, Theme } from "@material-ui/core"
-import { Title } from './component/Title';
-import { SigninArea } from './component/SigninArea';
-import { Provider } from 'unstated';
-import { CanvasArea } from './component/CanvasArea';
-import { TweetButtonArea } from './component/TweetButtonArea';
-import { TextFieldArea } from './component/TextFieldArea';
-import { Footer } from './component/Footer';
+import React from "react";
+import { makeStyles, createStyles, Theme } from "@material-ui/core";
+import { Title } from "./component/Title";
+import { SigninArea } from "./component/SigninArea";
+import { Provider } from "unstated";
+import { CanvasArea } from "./component/CanvasArea";
+import { TweetButtonArea } from "./component/TweetButtonArea";
+import { TextFieldArea } from "./component/TextFieldArea";
+import { Footer } from "./component/Footer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,9 +17,9 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: "auto",
       maxWidth: 600,
       minHeight: "100vh",
-      boxShadow: "0 0 5px "
+      boxShadow: "0 0 5px ",
     },
-  })
+  }),
 );
 
 const App: React.FC = () => {
@@ -39,6 +39,6 @@ const App: React.FC = () => {
       </div>
     </Provider>
   );
-}
+};
 
 export default App;
