@@ -1,23 +1,13 @@
 {
   "name": "thinking-generator",
-  "version": "1.0.0",
-  "description": "「と思う〇〇であった」という画像を合成してTwitterでシェアすることができるWebアプリケーションです。",
   "private": true,
   "scripts": {
+    "predeploy:functions": "cd functions && npm run build",
+    "deploy:functions": "firebase deploy --only functions",
     "predeploy:hosting": "cd hosting && npm run build",
     "deploy:hosting": "firebase deploy --only hosting",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss}'"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/y-hiraoka/thinking-generator.git"
-  },
-  "keywords": [],
-  "author": "",
-  "bugs": {
-    "url": "https://github.com/y-hiraoka/thinking-generator/issues"
-  },
-  "homepage": "https://github.com/y-hiraoka/thinking-generator#readme",
   "devDependencies": {
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
