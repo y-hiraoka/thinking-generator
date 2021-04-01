@@ -1,18 +1,11 @@
-import React from "react";
 import { makeStyles, createStyles, Button } from "@material-ui/core";
-import { Subscribe } from "unstated";
 import TweetIcon from "@material-ui/icons/Twitter";
-import { GlobalStateContainer } from "../state/GlobalState";
-import firebase from "../firebase";
+import { useGeneratorContainer } from "../state/generator";
 
 const useStyles = makeStyles(
   createStyles({
     buttonArea: {
       width: "100%",
-      paddingTop: 20,
-      paddingBottom: 20,
-      paddingLeft: 50,
-      paddingRight: 50,
       textAlign: "center",
     },
     tweetButton: {
@@ -33,42 +26,20 @@ const useStyles = makeStyles(
 
 export const TweetButtonArea = () => {
   const classes = useStyles();
-
-  const handleClick = (container: GlobalStateContainer) => async () => {
-    const currentUser = firebase.auth().currentUser;
-    if (!currentUser) return;
-
-    const storageRef = firebase.storage().ref();
-    const createRef = storageRef.child(`ogp-images/${currentUser.uid}.jpg`);
-    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-
-    const imagedata = canvas.toDataURL("image/jpeg").split(",")[1];
-    await createRef.putString(imagedata, "base64").then(snapshot => {
-      const tweeturl =
-        `http://twitter.com/share` +
-        `?url=${container.ogpUrl}` +
-        `&text=${container.state.tweetText.replace(/\r?\n/g, "%0a")}%0a%0a`;
-
-      if (window.open(tweeturl, "_blank")) {
-      } else {
-        window.location.href = tweeturl;
-      }
-    });
-  };
+  const submitTweet = useGeneratorContainer(c => c.submitTweet);
+  const disabled = useGeneratorContainer(
+    c => c.inputData.name === "" || c.inputData.tweet === "",
+  );
 
   return (
-    <Subscribe to={[GlobalStateContainer]}>
-      {(container: GlobalStateContainer) => (
-        <div className={classes.buttonArea}>
-          <Button
-            onClick={handleClick(container)}
-            className={classes.tweetButton}
-            disabled={container.state.user === null}>
-            <TweetIcon />
-            <span className={classes.buttonText}>ツイートする！</span>
-          </Button>
-        </div>
-      )}
-    </Subscribe>
+    <div className={classes.buttonArea}>
+      <Button
+        onClick={submitTweet}
+        className={classes.tweetButton}
+        disabled={disabled}>
+        <TweetIcon />
+        <span className={classes.buttonText}>ツイートする！</span>
+      </Button>
+    </div>
   );
 };

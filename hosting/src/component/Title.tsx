@@ -1,13 +1,13 @@
-import React from "react";
 import { makeStyles, createStyles, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(
   createStyles({
     title: {
-      margin: 0,
-      padding: 10,
       fontSize: 21,
-      textAlign: "center",
+      height: "60px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
       color: "rgba(0, 0, 0, 0.87)",
       "@media (max-width:360px)": {
         fontSize: 17,
@@ -16,11 +16,11 @@ const useStyles = makeStyles(
   }),
 );
 
-export const Title = () => {
+export const Title: React.VFC = () => {
   const classes = useStyles();
 
   return (
-    <Typography className={classes.title}>
+    <Typography className={classes.title} variant="h1">
       と思う〇〇であったジェネレーター
     </Typography>
   );

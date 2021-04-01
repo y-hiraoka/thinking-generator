@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/storage";
 
-firebase.initializeApp({
+const app = firebase.initializeApp({
   apiKey: "AIzaSyCl07KLKw5bbuclY_hMkc4FJfhtmyLJWks",
   authDomain: "thinking-generator.firebaseapp.com",
   databaseURL: "https://thinking-generator.firebaseio.com",
@@ -13,4 +13,8 @@ firebase.initializeApp({
   measurementId: "G-GPRLZB4B9P",
 });
 
-export default firebase;
+export { firebase };
+export const firebaseAuth = app.auth();
+export const firebaseStorage = app.storage();
+
+firebaseAuth.useDeviceLanguage();

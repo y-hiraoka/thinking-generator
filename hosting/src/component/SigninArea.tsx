@@ -1,13 +1,9 @@
-import React from "react";
-import { Avatar, Button, makeStyles, Theme, createStyles } from "@material-ui/core";
-import { Subscribe } from "unstated";
-import { GlobalStateContainer } from "../state/GlobalState";
+import { Avatar, Button, makeStyles, createStyles } from "@material-ui/core";
+import { signOut, usePhotoURLBigger } from "../state/user";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(
   createStyles({
     signinArea: {
-      paddingTop: 20,
-      paddingBottom: 20,
       textAlign: "center",
     },
     avatar: {
@@ -19,31 +15,16 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export function SigninArea() {
+export const SigninArea: React.VFC = () => {
   const classes = useStyles();
+  const photoURL = usePhotoURLBigger();
 
   return (
-    <Subscribe to={[GlobalStateContainer]}>
-      {(container: GlobalStateContainer) => (
-        <div className={classes.signinArea}>
-          {container.state.user ? (
-            <React.Fragment>
-              <Avatar
-                className={classes.avatar}
-                alt="Avatar Icon"
-                src={container.PhotoUrlbigger}
-              />
-              <Button onClick={container.logout} variant="outlined">
-                Logout
-              </Button>
-            </React.Fragment>
-          ) : (
-            <Button onClick={container.login} variant="outlined">
-              Login
-            </Button>
-          )}
-        </div>
-      )}
-    </Subscribe>
+    <div className={classes.signinArea}>
+      <Avatar className={classes.avatar} alt="Avatar Icon" src={photoURL} />
+      <Button onClick={signOut} variant="outlined">
+        Logout
+      </Button>
+    </div>
   );
-}
+};
