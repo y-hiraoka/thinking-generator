@@ -1,26 +1,15 @@
-import { makeStyles, createStyles } from "@material-ui/core";
 import { useGeneratorContainer } from "../state/generator";
-
-const useStyles = makeStyles(theme =>
-  createStyles({
-    canvas: {
-      width: "100%",
-      border: `1px solid ${theme.palette.grey[400]}`,
-      borderRadius: "6px",
-    },
-  }),
-);
+import styles from "./CanvasArea.module.css";
 
 const CanvasWidth = 870;
 const CanvasHeight = 456;
 
 export const CanvasArea = () => {
-  const classes = useStyles();
   const canvasRef = useGeneratorContainer(c => c.canvasRef);
 
   return (
     <canvas
-      className={classes.canvas}
+      className={styles.canvas}
       width={CanvasWidth}
       height={CanvasHeight}
       ref={canvasRef}

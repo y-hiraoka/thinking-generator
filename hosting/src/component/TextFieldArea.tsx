@@ -1,29 +1,18 @@
-import { makeStyles, Theme, createStyles, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import { useGeneratorContainer } from "../state/generator";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    textFieldArea: {
-      width: "100%",
-    },
-    textField: {
-      width: "100%",
-    },
-  }),
-);
+import styles from "./TextFieldArea.module.css";
 
 export const TextFieldArea = () => {
-  const classes = useStyles();
   const dispatch = useGeneratorContainer(c => c.dispatch);
   const userName = useGeneratorContainer(c => c.inputData.name);
   const tweet = useGeneratorContainer(c => c.inputData.tweet);
 
   return (
-    <div className={classes.textFieldArea}>
+    <div>
       <TextField
         label="なまえ"
         value={userName}
-        className={classes.textField}
+        className={styles.textField}
         margin="normal"
         onChange={e => dispatch({ type: "setName", name: e.target.value })}
       />
@@ -31,7 +20,7 @@ export const TextFieldArea = () => {
         label="ツイート"
         value={tweet}
         multiline
-        className={classes.textField}
+        className={styles.textField}
         margin="normal"
         onChange={e => dispatch({ type: "setTweet", tweet: e.target.value })}
       />

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { firebaseAuth, firebase } from "../common/firebase";
-import defaultUserImage from "../common/eye_shirome_woman.png";
+import { firebaseAuth, firebase } from "../common/firebaseClient";
+
+const DEFAULT_USER_IMAGE = "/images/eye_shirome_woman.png";
 
 type User = {
   uid: string;
@@ -8,17 +9,10 @@ type User = {
   photoURL: string | undefined;
 };
 
-const testUser: User = {
-  name: "localhost test user",
-  uid: "localhost-test-user",
-  photoURL:
-    "https://pbs.twimg.com/profile_images/1202181746285899776/4fS3r33J_normal.jpg",
-};
-
-const userContext = createContext<User | null>(null);
+const userContext = createContext<User | null | undefined>(undefined);
 
 export const UserProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<User | null | undefined>();
+  const [user, setUser] = useState<User | null>();
 
   useEffect(
     () =>
@@ -36,8 +30,6 @@ export const UserProvider: React.FC = ({ children }) => {
     [],
   );
 
-  if (user === undefined) return <div>loading...</div>;
-
   return <userContext.Provider value={user}>{children}</userContext.Provider>;
 };
 
@@ -47,16 +39,16 @@ export const useIsAlreadySignedIn = () => {
   return !!user;
 };
 
+export const useUser = () => {
+  return useContext(userContext);
+};
+
 export const useSignedInUser = (): User => {
   const user = useContext(userContext);
 
-  if (user === null && window.location.hostname === "localhost") {
-    return testUser;
-  }
+  if (user === undefined) throw new Error("Do not use this hook while loading.");
 
-  if (user === undefined || user === null) {
-    throw new Error("User must be signed in.");
-  }
+  if (user === null) throw new Error("User must be signed in.");
 
   return user;
 };
@@ -64,13 +56,13 @@ export const useSignedInUser = (): User => {
 export const usePhotoURLBigger = () => {
   const user = useSignedInUser();
 
-  return user.photoURL?.replace("normal", "bigger") ?? defaultUserImage;
+  return user.photoURL?.replace("normal", "bigger") ?? DEFAULT_USER_IMAGE;
 };
 
 export const usePhotoURL200x200 = () => {
   const user = useSignedInUser();
 
-  return user.photoURL?.replace("normal", "200x200") ?? defaultUserImage;
+  return user.photoURL?.replace("normal", "200x200") ?? DEFAULT_USER_IMAGE;
 };
 
 function hasTwitterImageURL(
