@@ -1,19 +1,9 @@
-import { createStyles, makeStyles, Link } from "@material-ui/core";
-
-const useStyles = makeStyles(
-  createStyles({
-    footer: {
-      width: "100%",
-      textAlign: "center",
-    },
-  }),
-);
+import { Link } from "@material-ui/core";
+import styles from "./Footer.module.css";
 
 export const Footer = () => {
-  const classes = useStyles();
-
   return (
-    <div className={classes.footer}>
+    <div className={styles.footer}>
       <Link href="https://twitter.com/stin_factory">stin_factory</Link>
     </div>
   );

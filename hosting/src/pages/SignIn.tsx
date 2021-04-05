@@ -1,29 +1,22 @@
-import { Button, createStyles, makeStyles } from "@material-ui/core";
-import { Redirect } from "react-router";
-import { signIn, useIsAlreadySignedIn } from "../state/user";
+import { Button } from "@material-ui/core";
+import { Redirect } from "../component/Redirect";
+import { signIn, useUser } from "../state/user";
+import styles from "./signin.module.css";
 
-const useStyles = makeStyles(
-  createStyles({
-    root: {
-      height: "100%",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  }),
-);
+const SignIn: React.VFC = () => {
+  const user = useUser();
 
-export const SignIn: React.VFC = () => {
-  const classes = useStyles();
-  const alreadySignedIn = useIsAlreadySignedIn();
+  if (user === undefined) return <div>loading...</div>;
 
-  if (alreadySignedIn) return <Redirect to="/" />;
+  if (user !== null) return <Redirect to="/" />;
 
   return (
-    <div className={classes.root}>
+    <div className={styles.root}>
       <Button onClick={signIn} variant="contained" color="primary">
         Sign in
       </Button>
     </div>
   );
 };
+
+export default SignIn;

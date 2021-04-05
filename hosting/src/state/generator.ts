@@ -1,11 +1,17 @@
 import { useCallback, useEffect, useReducer, useRef } from "react";
 import unreduxed from "unreduxed";
-import { firebaseStorage } from "../common/firebase";
+import { v4 as uuid } from "uuid";
+import { firebaseStorage } from "../common/firebaseClient";
 import { usePhotoURL200x200, useSignedInUser } from "./user";
 import { useSnapshot } from "../utils/useSnapshot";
-import { useOgpURL } from "./ogpURL";
-import baseImage from "../common/thinkingBaseImage.jpeg";
 import { fillTextAutoLine } from "../utils/canvas";
+import { toHashValue } from "../utils/toHashValue";
+import {
+  createExistingImage,
+  getExistingImage,
+} from "../repositories/existingImage";
+
+const BASE_IMAGE = "/images/thinkingBaseImage.jpeg";
 
 type InputData = {
   name: string;
@@ -29,7 +35,6 @@ const reducer: React.Reducer<InputData, Action> = (state, action) => {
 
 const useGenerator = () => {
   const user = useSignedInUser();
-  const ogpURL = useOgpURL();
   const photoURL = usePhotoURL200x200();
 
   const [inputData, dispatch] = useReducer(reducer, {
@@ -50,7 +55,7 @@ const useGenerator = () => {
     if (context === null) return;
 
     const image = new Image();
-    image.src = baseImage;
+    image.src = BASE_IMAGE;
 
     image.onload = () => {
       context.drawImage(image, 0, 0);
@@ -77,12 +82,38 @@ const useGenerator = () => {
   const submitTweet = useCallback(async () => {
     const inputData = inputDataSnapshot.current;
 
-    const imageData = canvasRef.current?.toDataURL("image/jpeg").split(",")[1] ?? "";
+    const nameHashValue = await toHashValue(inputData.name);
+    const photoURLHashValue = await toHashValue(photoURL);
 
-    const storageRef = firebaseStorage.ref();
-    const imagesRef = storageRef.child(`ogp-images/${user.uid}.jpg`);
+    const existingImage = await getExistingImage(
+      user.uid,
+      nameHashValue,
+      photoURLHashValue,
+    );
 
-    await imagesRef.putString(imageData, "base64");
+    let ogpURL: string;
+
+    if (existingImage !== undefined) {
+      ogpURL = `${window.location.origin}/share/${existingImage.fileName}`;
+    } else {
+      const imageData =
+        canvasRef.current?.toDataURL("image/jpeg").split(",")[1] ?? "";
+
+      const fileName = uuid();
+
+      const storageRef = firebaseStorage.ref();
+      const imagesRef = storageRef.child(`ogp-images/${fileName}.jpg`);
+      await imagesRef.putString(imageData, "base64", { contentType: "image/jpeg" });
+
+      await createExistingImage(
+        user.uid,
+        nameHashValue,
+        photoURLHashValue,
+        fileName,
+      );
+
+      ogpURL = `${window.location.origin}/share/${fileName}`;
+    }
 
     const tweeturl =
       `http://twitter.com/share` +
@@ -93,7 +124,7 @@ const useGenerator = () => {
     } else {
       window.location.href = tweeturl;
     }
-  }, [inputDataSnapshot, ogpURL, user.uid]);
+  }, [inputDataSnapshot, user.uid]);
 
   return {
     inputData,

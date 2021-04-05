@@ -1,0 +1,10 @@
+.signinArea {
+  text-align: center;
+}
+
+.avatar {
+  margin: auto;
+  margin-bottom: 20px;
+  width: 60px;
+  height: 60px;
+}
