@@ -6,7 +6,7 @@ import "firebase/storage";
 const app = !firebase.apps.length
   ? firebase.initializeApp({
       apiKey: "AIzaSyCl07KLKw5bbuclY_hMkc4FJfhtmyLJWks",
-      authDomain: "thinking-generator.stin.ink",
+      authDomain: "thinking-generator.firebaseapp.com",
       databaseURL: "https://thinking-generator.firebaseio.com",
       projectId: "thinking-generator",
       storageBucket: "thinking-generator.appspot.com",
