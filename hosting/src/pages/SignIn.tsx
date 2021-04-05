@@ -1,3 +1,4 @@
+import { GetStaticProps } from "next";
 import { Button } from "@material-ui/core";
 import { Redirect } from "../component/Redirect";
 import { signIn, useUser } from "../state/user";
@@ -17,6 +18,12 @@ const SignIn: React.VFC = () => {
       </Button>
     </div>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {},
+  };
 };
 
 export default SignIn;
