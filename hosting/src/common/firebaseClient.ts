@@ -5,14 +5,14 @@ import "firebase/storage";
 
 const app = !firebase.apps.length
   ? firebase.initializeApp({
-      apiKey: "AIzaSyCl07KLKw5bbuclY_hMkc4FJfhtmyLJWks",
-      authDomain: "thinking-generator.firebaseapp.com",
-      databaseURL: "https://thinking-generator.firebaseio.com",
-      projectId: "thinking-generator",
-      storageBucket: "thinking-generator.appspot.com",
-      messagingSenderId: "376700794190",
-      appId: "1:376700794190:web:d7986b74dfb2d1d9da1a1f",
-      measurementId: "G-GPRLZB4B9P",
+      apiKey: process.env.NEXT_PUBLIC_API_KEY,
+      authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+      databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
+      projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+      storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+      messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+      appId: process.env.NEXT_PUBLIC_APP_ID,
+      measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
     })
   : firebase.app();
 
