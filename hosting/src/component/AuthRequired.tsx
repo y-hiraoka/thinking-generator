@@ -1,4 +1,4 @@
-import { useIsAlreadySignedIn, useUser } from "../state/user";
+import { useUser } from "../state/user";
 import { Redirect } from "./Redirect";
 
 export const AuthRequired: React.FC = ({ children }) => {
