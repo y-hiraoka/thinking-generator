@@ -11,6 +11,10 @@ const MyApp: React.VFC<AppProps> = ({ Component, pageProps }) => {
     <>
       <Head>
         <title>と思う〇〇であったジェネレーター</title>
+        <meta
+          name="description"
+          content="「と思う〇〇であった」という画像をTwitterに投稿するサービスです。"
+        />
       </Head>
       <StylesProvider injectFirst>
         <div className={styles.container}>
